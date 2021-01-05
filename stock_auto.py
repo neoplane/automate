@@ -73,7 +73,7 @@ from pandas.plotting import table
 import os
 
 # %matplotlib inline 은 jupyter notebook 사용자 용 - jupyter notebook 내에 그래프가 그려지게 한다.
-% matplotlib_inline
+
 #################################
 ## 차트 그리기
 #################################
