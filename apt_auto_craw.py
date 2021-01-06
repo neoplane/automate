@@ -1,10 +1,9 @@
-
 login = {
-    "id" : "<네이버 로그인 아이디>",
-    "pw" : "<네이버 로그인 비밀번호>"
+    "id": "<네이버 로그인 아이디>",
+    "pw": "<네이버 로그인 비밀번호>"
 }
 
- # 자동화 테스트를 위해 셀리니움을 불러옵니다.
+# 자동화 테스트를 위해 셀리니움을 불러옵니다.
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import time
@@ -13,7 +12,7 @@ import time
 url = "https://aptgin.com/"
 
 options = Options()
-options.add_argument("--start-maximized") ## 최대사이즈로 열기
+options.add_argument("--start-maximized")  ## 최대사이즈로 열기
 # 크롬 웹 드라이버의 경로를 설정합니다. ex) "C:\chrome_driver\80\chromedriver.exe"
 driver = webdriver.Chrome("<드라이버 경로 설정>", chrome_options=options)
 
@@ -53,6 +52,7 @@ def aptgin_login():
     # 브라우저 등록 클릭
     driver.find_element_by_xpath('//*[@id="new.save"]').click()
 
+
 aptgin_login()
 
 import pandas as pd
@@ -60,9 +60,9 @@ import pandas as pd
 code_file = "법정동코드 전체자료/법정동코드 전체자료.txt"
 code = pd.read_csv(code_file, sep='\t')
 code.columns = ['code', 'name', 'is_exist']
-code = code [code['is_exist'] == '존재']
+code = code[code['is_exist'] == '존재']
 ## 시, 구 까지만 필요한 상황이므로, 시/구를 분리한다.
-addr = code['name'].str.split(" ", n=3, expand = True)
+addr = code['name'].str.split(" ", n=3, expand=True)
 
 ## 컬럼 이름을 변경한다.
 addr.columns = ['depth0', 'depth1', 'depth2', 'depth3']
@@ -72,7 +72,7 @@ addr['sigu'] = addr['depth0'] + " " + addr['depth1']
 # unique한 값을 알아낸다. 0번째는 nan이 있다. 그래서 1번째 index부터 요청하도록 하겠다.
 sigu_list = list(addr.sigu.unique())
 
-len(sigu_list) # 총 253개의 시+구 가 있나보다.
+len(sigu_list)  # 총 253개의 시+구 가 있나보다.
 
 si = "서울특별시"
 gu = "성북구"
@@ -91,10 +91,12 @@ time.sleep(2)
 
 # 그래프 저장
 driver.execute_script("arguments[0].scrollIntoView();", \
-                          driver.find_element_by_css_selector('div.gin-filter')) # driver.find_element_by_xpath('/html/body/div[5]/div/div[2]') 와 동일코드
+                      driver.find_element_by_css_selector(
+                          'div.gin-filter'))  # driver.find_element_by_xpath('/html/body/div[5]/div/div[2]') 와 동일코드
 time.sleep(2)
-div = driver.find_element_by_css_selector('div#chartDivT1') # div = driver.find_element_by_xpath('//*[@id="chartDivT1"]') 와 동일코드
-div.screenshot("graph\%s_%s_수공급.png" %(si, gu))
+div = driver.find_element_by_css_selector(
+    'div#chartDivT1')  # div = driver.find_element_by_xpath('//*[@id="chartDivT1"]') 와 동일코드
+div.screenshot("graph\%s_%s_수공급.png" % (si, gu))
 
 # 아파트 버튼 클릭
 driver.find_element_by_xpath('//*[@id="gin-menu"]/ul/li[2]/a').click()
@@ -118,7 +120,7 @@ for op in ops:
 el.find_element_by_id("navLoc2").click()
 ops = el.find_elements_by_tag_name('li')
 for op in ops:
-    if op.text == gu :
+    if op.text == gu:
         print(op.text)
         op.click()
         break
@@ -134,10 +136,11 @@ driver.find_element_by_xpath('//*[@id="tab-main"]/div[1]/div[2]/div/label[2]').c
 ## 표 저장
 ####################
 driver.execute_script("arguments[0].scrollIntoView();", \
-                          driver.find_element_by_css_selector('div.comparer'))
+                      driver.find_element_by_css_selector('div.comparer'))
 time.sleep(5)
-div = driver.find_element_by_css_selector('div#sub02-Apt-Grid') # div = driver.find_element_by_id('sub02-Apt-Grid') 와 동일코드
-div.screenshot("graph\%s_%s_대장아파트.png" %(si, gu))
+div = driver.find_element_by_css_selector(
+    'div#sub02-Apt-Grid')  # div = driver.find_element_by_id('sub02-Apt-Grid') 와 동일코드
+div.screenshot("graph\%s_%s_대장아파트.png" % (si, gu))
 time.sleep(2)
 
 # 대장아파트로 진입 - 매매전세 가격
@@ -148,7 +151,7 @@ driver.execute_script("arguments[0].scrollIntoView();", \
                       driver.find_element_by_css_selector('div.title-area.blue'))
 time.sleep(5)
 div = driver.find_element_by_css_selector('div.highcharts-container')
-div.screenshot("graph\%s_%s_대장아파트매매전세.png" %(si, gu))
+div.screenshot("graph\%s_%s_대장아파트매매전세.png" % (si, gu))
 time.sleep(2)
 
 ######################################
